@@ -7,18 +7,18 @@
 * exposes standard interfaces; plays well with standard packages like `io`, `bufio`, etc..
 * does not handle memory management (allocating/destructing slice). It's up to user to decide how to deal with buffers; whether to use GC.
 
-`water/waterutil` has some useful functions to interpret MAC farme headers and IP packet headers. It also contains some constants such as protocol numbers and ethernet frame types.
+`water/util` has some useful functions to interpret MAC farme headers and IP packet headers. It also contains some constants such as protocol numbers and ethernet frame types.
 
 ## Installation
 ```
-go get -u github.com/inercia/water
-go get -u github.com/inercia/water/waterutil
+go get -u github.com/inercia/water/tuntap
+go get -u github.com/inercia/water/util
 ```
 
 ## Documentation
 [http://godoc.org/github.com/inercia/water](http://godoc.org/github.com/inercia/water)
 
-[http://godoc.org/github.com/inercia/water/waterutil](http://godoc.org/github.com/inercia/water/waterutil)
+[http://godoc.org/github.com/inercia/water/util](http://godoc.org/github.com/inercia/water/waterutil)
 
 ## Example
 
@@ -34,7 +34,7 @@ import (
 const BUFFERSIZE = 1522
 
 func main() {
-	ifce, err := water.NewTAP("")
+	ifce, err := tuntap.NewTAP("")
 	fmt.Printf("%v, %v\n\n", err, ifce)
 	buffer := make([]byte, BUFFERSIZE)
 	for {
@@ -42,13 +42,13 @@ func main() {
 		if err != nil {
 			break
 		}
-		ethertype := waterutil.MACEthertype(buffer)
-		if ethertype == waterutil.IPv4 {
-			packet := waterutil.MACPayload(buffer)
+		ethertype := util.MACEthertype(buffer)
+		if ethertype == util.IPv4 {
+			packet := util.MACPayload(buffer)
 			if waterutil.IsIPv4(packet) {
-				fmt.Printf("Source:      %v [%v]\n", waterutil.MACSource(buffer), waterutil.IPv4Source(packet))
-				fmt.Printf("Destination: %v [%v]\n", waterutil.MACDestination(buffer), waterutil.IPv4Destination(packet))
-				fmt.Printf("Protocol:    %v\n\n", waterutil.IPv4Protocol(packet))
+				fmt.Printf("Source:      %v [%v]\n", util.MACSource(buffer), util.IPv4Source(packet))
+				fmt.Printf("Destination: %v [%v]\n", util.MACDestination(buffer), util.IPv4Destination(packet))
+				fmt.Printf("Protocol:    %v\n\n", util.IPv4Protocol(packet))
 			}
 		}
 	}
@@ -89,8 +89,7 @@ Protocol:    1
 ```
 
 ## TODO
-* IPv6 Support in `waterutil`
-* Darwin(Mac) Support
+* IPv6 Support in `util`
 
 ## LICENSE
 [BSD 3-Clause License](http://opensource.org/licenses/BSD-3-Clause)
