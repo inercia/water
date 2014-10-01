@@ -20,6 +20,38 @@ type ifReq struct {
 	pad   [0x28 - 0x10 - 2]byte
 }
 
+// Create a new TAP interface whose name is ifName.
+// If ifName is empty, a default name (tap0, tap1, ... ) will be assigned.
+// ifName should not exceed 16 bytes.
+func NewTAP(ifName string) (ifce *Interface, err error) {
+	file, err := os.OpenFile("/dev/net/tun", os.O_RDWR, 0)
+	if err != nil {
+		return nil, err
+	}
+	name, err := createInterface(file.Fd(), ifName, cIFF_TAP|cIFF_NO_PI)
+	if err != nil {
+		return nil, err
+	}
+	ifce = &Interface{isTAP: true, file: file, name: name}
+	return
+}
+
+// Create a new TUN interface whose name is ifName.
+// If ifName is empty, a default name (tap0, tap1, ... ) will be assigned.
+// ifName should not exceed 16 bytes.
+func NewTUN(ifName string) (ifce *Interface, err error) {
+	file, err := os.OpenFile("/dev/net/tun", os.O_RDWR, 0)
+	if err != nil {
+		return nil, err
+	}
+	name, err := createInterface(file.Fd(), ifName, cIFF_TUN|cIFF_NO_PI)
+	if err != nil {
+		return nil, err
+	}
+	ifce = &Interface{isTAP: false, file: file, name: name}
+	return
+}
+
 func createInterface(fd uintptr, ifName string, flags uint16) (createdIFName string, err error) {
 	var req ifReq
 	req.Flags = flags
