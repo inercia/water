@@ -1,4 +1,4 @@
-package waterutil
+package util
 
 type Ethertype [2]byte
 

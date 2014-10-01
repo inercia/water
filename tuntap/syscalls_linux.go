@@ -1,6 +1,6 @@
 // +build linux
 
-package water
+package tuntap
 
 import (
 	"strings"

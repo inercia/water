@@ -1,8 +1,11 @@
-package water
+package tuntap
 
 import (
+	"errors"
 	"os"
 )
+
+var ERROR_INVALID_DEV = errors.New("invalid tun/tap device")
 
 // Interface is a TUN/TAP interface.
 type Interface struct {
@@ -28,12 +31,18 @@ func (ifce *Interface) Name() string {
 
 // Implement io.Writer interface.
 func (ifce *Interface) Write(p []byte) (n int, err error) {
-	n, err = ifce.file.Write(p)
-	return
+	if ifce.file != nil {
+		return ifce.file.Write(p)
+	} else {
+		return 0, ERROR_INVALID_DEV
+	}
 }
 
 // Implement io.Reader interface.
 func (ifce *Interface) Read(p []byte) (n int, err error) {
-	n, err = ifce.file.Read(p)
-	return
+	if ifce.file != nil {
+		return ifce.file.Read(p)
+	} else {
+		return 0, ERROR_INVALID_DEV
+	}
 }

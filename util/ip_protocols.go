@@ -1,4 +1,4 @@
-package waterutil
+package util
 
 type IPProtocol byte
 

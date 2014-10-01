@@ -2,29 +2,35 @@ package main
 
 import (
 	"fmt"
-	"github.com/inercia/water"
-	"github.com/inercia/water/waterutil"
+	"github.com/inercia/water/tuntap"
+	"github.com/inercia/water/util"
 )
 
 const BUFFERSIZE = 1522
 
 func main() {
-	ifce, err := water.NewTAP("")
+	ifce, err := tuntap.NewTAP("")
+	if err != nil {
+		fmt.Printf("ERROR: when initializing tun/tap device: %s\n", err)
+		return
+	}
+
 	buffer := make([]byte, BUFFERSIZE)
 	for {
 		_, err = ifce.Read(buffer)
 		if err != nil {
+			fmt.Printf("ERROR: when reading from tun/tap device: %s\n", err)
 			break
 		}
 
-		ethertype := waterutil.MACEthertype(buffer)
+		ethertype := util.MACEthertype(buffer)
 		fmt.Printf("Ethertype:      %v\n", ethertype)
-		if ethertype == waterutil.IPv4 {
-			packet := waterutil.MACPayload(buffer)
-			if waterutil.IsIPv4(packet) {
-				fmt.Printf("Source:      %v [%v]\n", waterutil.MACSource(buffer), waterutil.IPv4Source(packet))
-				fmt.Printf("Destination: %v [%v]\n", waterutil.MACDestination(buffer), waterutil.IPv4Destination(packet))
-				fmt.Printf("Protocol:    %v\n\n", waterutil.IPv4Protocol(packet))
+		if ethertype == util.IPv4 {
+			packet := util.MACPayload(buffer)
+			if util.IsIPv4(packet) {
+				fmt.Printf("Source:      %v [%v]\n", util.MACSource(buffer), util.IPv4Source(packet))
+				fmt.Printf("Destination: %v [%v]\n", util.MACDestination(buffer), util.IPv4Destination(packet))
+				fmt.Printf("Protocol:    %v\n\n", util.IPv4Protocol(packet))
 			}
 		}
 	}

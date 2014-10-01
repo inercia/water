@@ -1,6 +1,6 @@
 // +build darwin
 
-package water
+package tuntap
 
 /*
 #include <stdlib.h>
@@ -19,13 +19,13 @@ import (
 const UTUN_CONTROL_NAME = "com.apple.net.utun_control"
 const UTUN_OPT_IFNAME = 2
 
-var ERROR_NOT_DEVICE_FOUND = errors.New("could not find valid tun/tap device")
+var ERROR_NOT_DEVICE_FOUND = errors.New("could not obtain valid tun/tap device")
 
 // Create a new TAP interface whose name is ifName.
 // If ifName is empty, a default name (tap0, tap1, ... ) will be assigned.
 // ifName should not exceed 16 bytes.
 func NewTAP(ifName string) (ifce *Interface, err error) {
-	name, file, err := createInterface(ifName)
+	name, file, err := createInterface()
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func NewTAP(ifName string) (ifce *Interface, err error) {
 // If ifName is empty, a default name (tap0, tap1, ... ) will be assigned.
 // ifName should not exceed 16 bytes.
 func NewTUN(ifName string) (ifce *Interface, err error) {
-	name, file, err := createInterface(ifName)
+	name, file, err := createInterface()
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func NewTUN(ifName string) (ifce *Interface, err error) {
 	return
 }
 
-func createInterface(ifName string) (createdIFName string, file *os.File, err error) {
+func createInterface() (createdIFName string, file *os.File, err error) {
 	file = nil
 	err = ERROR_NOT_DEVICE_FOUND
 
