@@ -11,14 +11,14 @@
 
 ## Installation
 ```
-go get -u github.com/songgao/water
-go get -u github.com/songgao/water/waterutil
+go get -u github.com/inercia/water
+go get -u github.com/inercia/water/waterutil
 ```
 
 ## Documentation
-[http://godoc.org/github.com/songgao/water](http://godoc.org/github.com/songgao/water)
+[http://godoc.org/github.com/inercia/water](http://godoc.org/github.com/inercia/water)
 
-[http://godoc.org/github.com/songgao/water/waterutil](http://godoc.org/github.com/songgao/water/waterutil)
+[http://godoc.org/github.com/inercia/water/waterutil](http://godoc.org/github.com/inercia/water/waterutil)
 
 ## Example
 
@@ -26,8 +26,8 @@ go get -u github.com/songgao/water/waterutil
 package main
 
 import (
-	"github.com/songgao/water"
-	"github.com/songgao/water/waterutil"
+	"github.com/inercia/water/tuntap"
+	"github.com/inercia/water/util"
 	"fmt"
 )
 
