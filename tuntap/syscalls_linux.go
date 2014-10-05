@@ -23,7 +23,7 @@ type ifReq struct {
 // Create a new TAP interface whose name is ifName.
 // If ifName is empty, a default name (tap0, tap1, ... ) will be assigned.
 // ifName should not exceed 16 bytes.
-func NewTAP(ifName string) (ifce *Interface, err error) {
+func NewTAP(ifName string) (ifce *TunTap, err error) {
 	file, err := os.OpenFile("/dev/net/tun", os.O_RDWR, 0)
 	if err != nil {
 		return nil, err
@@ -32,14 +32,14 @@ func NewTAP(ifName string) (ifce *Interface, err error) {
 	if err != nil {
 		return nil, err
 	}
-	ifce = &Interface{isTAP: true, file: file, name: name}
+	ifce = &TunTap{isTAP: true, file: file, name: name}
 	return
 }
 
 // Create a new TUN interface whose name is ifName.
 // If ifName is empty, a default name (tap0, tap1, ... ) will be assigned.
 // ifName should not exceed 16 bytes.
-func NewTUN(ifName string) (ifce *Interface, err error) {
+func NewTUN(ifName string) (ifce *TunTap, err error) {
 	file, err := os.OpenFile("/dev/net/tun", os.O_RDWR, 0)
 	if err != nil {
 		return nil, err
@@ -48,7 +48,7 @@ func NewTUN(ifName string) (ifce *Interface, err error) {
 	if err != nil {
 		return nil, err
 	}
-	ifce = &Interface{isTAP: false, file: file, name: name}
+	ifce = &TunTap{isTAP: false, file: file, name: name}
 	return
 }
 

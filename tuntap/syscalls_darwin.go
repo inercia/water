@@ -9,7 +9,6 @@ import "C"
 
 import (
 	"errors"
-	"fmt"
 	"github.com/inercia/kernctl"
 	"os"
 	"syscall"
@@ -24,24 +23,24 @@ var ERROR_NOT_DEVICE_FOUND = errors.New("could not obtain valid tun/tap device")
 // Create a new TAP interface whose name is ifName.
 // If ifName is empty, a default name (tap0, tap1, ... ) will be assigned.
 // ifName should not exceed 16 bytes.
-func NewTAP(ifName string) (ifce *Interface, err error) {
+func NewTAP(ifName string) (ifce *TunTap, err error) {
 	name, file, err := createInterface()
 	if err != nil {
 		return nil, err
 	}
-	ifce = &Interface{isTAP: true, file: file, name: name}
+	ifce = &TunTap{isTAP: true, file: file, name: name}
 	return
 }
 
 // Create a new TUN interface whose name is ifName.
 // If ifName is empty, a default name (tap0, tap1, ... ) will be assigned.
 // ifName should not exceed 16 bytes.
-func NewTUN(ifName string) (ifce *Interface, err error) {
+func NewTUN(ifName string) (ifce *TunTap, err error) {
 	name, file, err := createInterface()
 	if err != nil {
 		return nil, err
 	}
-	ifce = &Interface{isTAP: false, file: file, name: name}
+	ifce = &TunTap{isTAP: false, file: file, name: name}
 	return
 }
 
@@ -66,11 +65,6 @@ func createInterface() (createdIFName string, file *os.File, err error) {
 			continue
 		} else {
 			createdIFName := C.GoStringN(readBuf, C.int(readBufLen))
-
-			fmt.Printf("Try num: %d\n", utunnum)
-			fmt.Printf("Fd: %d\n", conn.Fd)
-			fmt.Printf("Dev name: %s [%d]\n", createdIFName, readBufLen)
-
 			file = os.NewFile(uintptr(conn.Fd), createdIFName)
 			err = nil
 			break
