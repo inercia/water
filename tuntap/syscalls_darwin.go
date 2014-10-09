@@ -61,10 +61,8 @@ func createInterface() (createdIFName string, file *os.File, err error) {
 			uintptr(conn.Fd),
 			uintptr(kernctl.SYSPROTO_CONTROL), uintptr(UTUN_OPT_IFNAME),
 			uintptr(unsafe.Pointer(readBuf)), uintptr(unsafe.Pointer(&readBufLen)), 0)
-		if gserr != 0 {
-			continue
-		} else {
-			createdIFName := C.GoStringN(readBuf, C.int(readBufLen))
+		if gserr == 0 {
+			createdIFName = C.GoStringN(readBuf, C.int(readBufLen))
 			file = os.NewFile(uintptr(conn.Fd), createdIFName)
 			err = nil
 			break
