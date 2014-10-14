@@ -3,6 +3,7 @@
 package tuntap
 
 import (
+	"os"
 	"strings"
 	"syscall"
 	"unsafe"
