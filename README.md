@@ -1,4 +1,8 @@
-# water
+Description
+===========
+
+[![Build Status](https://drone.io/github.com/inercia/water/status.png)](https://drone.io/github.com/inercia/water/latest)
+
 `water` is a native Go library for [TUN/TAP](http://en.wikipedia.org/wiki/TUN/TAP) interfaces.
 
 `water` is designed to be simple and efficient. It
@@ -9,18 +13,23 @@
 
 `water/util` has some useful functions to interpret MAC farme headers and IP packet headers. It also contains some constants such as protocol numbers and ethernet frame types.
 
-## Installation
+Installation
+------------
+
 ```
 go get -u github.com/inercia/water/tuntap
 go get -u github.com/inercia/water/util
 ```
 
-## Documentation
+Documentation
+-------------
+
 [http://godoc.org/github.com/inercia/water](http://godoc.org/github.com/inercia/water)
 
 [http://godoc.org/github.com/inercia/water/util](http://godoc.org/github.com/inercia/water/waterutil)
 
-## Example
+Example
+-------
 
 ```go
 package main
@@ -88,11 +97,18 @@ Destination: ff:ff:ff:ff:ff:ff [10.0.0.255]
 Protocol:    1
 ```
 
-## TODO
+TODO
+----
+
 * IPv6 Support in `util`
 
-## LICENSE
+LICENSE
+-------
+
 [BSD 3-Clause License](http://opensource.org/licenses/BSD-3-Clause)
 
-## Alternatives
+Alternatives
+------------
+
 `tuntap`: [https://code.google.com/p/tuntap/](https://code.google.com/p/tuntap/)
+
