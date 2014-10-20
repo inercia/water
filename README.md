@@ -97,6 +97,11 @@ Destination: ff:ff:ff:ff:ff:ff [10.0.0.255]
 Protocol:    1
 ```
 
+Changes from original source tree
+---------------------------------
+
+* Added support for OS X tap devices.
+
 TODO
 ----
 
